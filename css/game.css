@@ -62,6 +62,9 @@ img{
 .deck .card.disabled {
 	pointer-events: none;
 }
+.deck .card.match {
+    cursor: default;
+}
 .moves{
   background-color: turquoise;
   height: 110px;

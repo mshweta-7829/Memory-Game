@@ -2,6 +2,7 @@ let images = document.getElementsByTagName("img");
 let cards = document.getElementsByClassName("card");
 let noMoves = document.querySelector(".moves");
 let popupWindow = document.getElementById("popup");
+let matches = document.getElementsByClassName("match");
 
     var step;
     var p1, p2;
@@ -13,6 +14,7 @@ function startGame() {
     noMoves.innerHTML = 0;
     step = 1;
     matched = 0;
+    removeMatches();
 }
 var array = [1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12].map(p => [p, Math.random()])
             .sort((a,b) => a[1] - b[1]).map(p => p[0]);
@@ -40,14 +42,19 @@ function disable(){
         cards[i].classList.add("disabled");
     }
 }
+function removeMatches(){
+    for(var i=0; i<cards.length; i++){
+        cards[i].classList.remove("match");
+    }
+}
 
 function check(){
     if(p1.src2 == p2.src2){
-         step = 1;
-         matched++;
-         if(matched == 12){
-             congrats();
-         }
+        p1.parentElement.classList.add("disabled", "match");
+        p2.parentElement.classList.add("disabled", "match");
+        if(matches.length == 24){
+            congrats();
+        }
      }else{
      p2.src = p1.src = 'images/qsn.jpeg';
      }
