@@ -6,15 +6,14 @@ let matches = document.getElementsByClassName("match");
 
     var step;
     var p1, p2;
-    var matched ;
 
-window.onload = startGame();
+window.onload = resetGame();
 
-function startGame() { 
+function resetGame() { 
     noMoves.innerHTML = 0;
     step = 1;
-    matched = 0;
     removeMatches();
+    enable();
 }
 var array = [1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12].map(p => [p, Math.random()])
             .sort((a,b) => a[1] - b[1]).map(p => p[0]);
@@ -55,37 +54,45 @@ function check(){
         if(matches.length == 24){
             congrats();
         }
+         step = 1;
      }else{
      p2.src = p1.src = 'images/qsn.jpeg';
      }
      enable();
      step = 1;
 }
-document.addEventListener('click', function(e){ 
-    switch(step){
-        case 1 : 
-        if(e.target.tagName == 'IMG'){ 
-            noMoves.innerHTML = Number(noMoves.innerHTML) + 1;
-            e.target.src = e.target.src2;
-            p1 = e.target;
-            step = 2;
-        }
-        break;
-        case 2: 
-        if(e.target.tagName == 'IMG'){
-            noMoves.innerHTML = Number(noMoves.innerHTML) + 1;
-            e.target.src = e.target.src2;
-            p2 = e.target;
-            disable();
-            sleep(800).then(() => {
-                check();
-            })
-        } 
-        break;
-    }
-});
+function startNewGame(e){
+    var len = e.target.parentNode;
+    console.log("hi" + len.classList);
+    if(!len.classList.contains("match")){
+         switch(step){
+             case 1 : 
+             if(e.target.tagName == 'IMG'){ 
+                 e.target.src = e.target.src2;
+                 p1 = e.target;
+                 noMoves.innerHTML = Number(noMoves.innerHTML) + 1;
+                 step = 2;
+             }
+             break;
+             case 2: 
+             if(e.target.tagName == 'IMG'){
+                 e.target.src = e.target.src2;
+                 p2 = e.target;
+                 noMoves.innerHTML = Number(noMoves.innerHTML) + 1;
+                 disable();
+                 sleep(800).then(() => {
+                     check();
+                 })
+             } 
+             break;
+         }
+     }
+ }
 
 function playAgain() {
     popupWindow.classList.remove("show");
-    startGame();
+    resetGame();
+}
+for(var i=0; i<cards.length; i++){
+    cards[i].addEventListener("click", startNewGame);
 }
